@@ -1,0 +1,35 @@
+##
+# Usage: 
+#     $ docker-compose up
+#     $ docker-compose down
+#
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:15.1
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+     - "db"
+
+  # pgadmin4:
+  #   image: dpage/pgadmin4:6.19
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: citycult@example.com
+  #     PGADMIN_DEFAULT_PASSWORD: postgres
+  #   volumes:
+  #     - ./pgadmin4/servers.json:/pgadmin4/servers.json
+  #   ports:
+  #     - 8080:80
+  #   depends_on:
+  #      - "db"
