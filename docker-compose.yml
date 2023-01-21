@@ -20,6 +20,7 @@ services:
     volumes:
       - ./sql/10_init_schema.sql:/docker-entrypoint-initdb.d/10_init_db.sql
       - ./sql/20_init_data.sql:/docker-entrypoint-initdb.d/20_init_data.sql
+      - ./sql/50_example_data.sql:/docker-entrypoint-initdb.d/50_example_data.sql
 
   adminer:
     image: adminer:4.8.1
