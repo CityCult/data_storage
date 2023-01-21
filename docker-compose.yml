@@ -1,6 +1,8 @@
 ##
 # Usage: 
-#     $ docker-compose up
+#     $ docker-compose up  # only starts PostgreSQL
+#     $ docker-compose --profile debug up  # starts PostgreSQL and adminer
+#     $ docker-compose --profile debug-advanced up  # starts PostgreSQL and pgadmin4
 #     $ docker-compose down
 #
 version: '3.1'
@@ -12,6 +14,12 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: citycult
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sql/10_init_schema.sql:/docker-entrypoint-initdb.d/10_init_db.sql
+      - ./sql/20_init_data.sql:/docker-entrypoint-initdb.d/20_init_data.sql
 
   adminer:
     image: adminer:4.8.1
@@ -20,16 +28,20 @@ services:
       - 8080:8080
     depends_on:
      - "db"
+    profiles:
+      - debug
 
-  # pgadmin4:
-  #   image: dpage/pgadmin4:6.19
-  #   restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: citycult@example.com
-  #     PGADMIN_DEFAULT_PASSWORD: postgres
-  #   volumes:
-  #     - ./pgadmin4/servers.json:/pgadmin4/servers.json
-  #   ports:
-  #     - 8080:80
-  #   depends_on:
-  #      - "db"
+  pgadmin4:
+    image: dpage/pgadmin4:6.19
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@example.org
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json
+    ports:
+      - 8000:80
+    depends_on:
+       - "db"
+    profiles:
+      - debug-advanced
