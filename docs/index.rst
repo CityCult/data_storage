@@ -8,3 +8,4 @@ City:Cult's Data Storage
 
 * `App Overview <app_overview.html>`_
 * `Changelog <CHANGELOG.html>`_
+* `Getting Started <getting_started.html>`_
